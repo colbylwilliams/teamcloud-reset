@@ -54,7 +54,7 @@ async def main(resettimer: func.TimerRequest, msgs: func.Out[typing.List[str]]) 
         async for database in client.list_databases():
             try:
                 logging.info('Deleting database with id: %s', database['id'])
-                await client.delete_database(id)
+                await client.delete_database(database)
 
             except CosmosResourceNotFoundError:
                 logging.info('A database with id %s does not exist', database['id'])
