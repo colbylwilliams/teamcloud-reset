@@ -4,3 +4,5 @@ local.settings.json
 test
 .venv
 .local
+README.md
+LICENSE
