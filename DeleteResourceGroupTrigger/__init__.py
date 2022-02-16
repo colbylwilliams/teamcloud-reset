@@ -18,11 +18,11 @@ async def main(msg: func.QueueMessage) -> None:
     rg_id = parse_resource_id(rg.id)
     sub_id = rg_id['subscription']
 
-    logging.info('Starting Delete task for Resource Group %s (%s)', rg.name, rg.id)
+    logging.info('Starting delete task for Resource Group: %s', rg.name)
 
-    credential = DefaultAzureCredential(logging_enable=True)
+    credential = DefaultAzureCredential()
     lock_client = ManagementLockClient(credential=credential, subscription_id=sub_id)
-    
+
     logging.info('Getting Management Locks for Resource Group...')
 
     async with lock_client, credential:

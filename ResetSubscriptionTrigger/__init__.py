@@ -15,20 +15,19 @@ async def main(msg: func.QueueMessage, msgs: func.Out[typing.List[str]]) -> None
 
     sub = Subscription.deserialize(msg.get_json())
 
-    logging.info('Reseting subscription: %s (%s)', sub.display_name, sub.subscription_id)
+    logging.info('Reseting subscription: %s', sub.display_name)
 
-    credential = DefaultAzureCredential(logging_enable=True)
+    credential = DefaultAzureCredential()
     client = ResourceManagementClient(credential=credential, subscription_id=sub.subscription_id)
 
+    logging.info('Queuing delete of the following Resource Groups:')
+
+    rg_msgs = []
+
     async with client, credential:
-        rgs = await client.resource_groups.list()
-
-    logging.info('Deleting the following Resource Groups:')
-
-    for rg in rgs:
-        logging.info('...%s (%s)', rg.name, rg.id)
-
-    rg_msgs = [json.dumps(rg.serialize(keep_readonly=True)) for rg in rgs]
+        async for rg in client.resource_groups.list():
+            logging.info('...%s (%s)', rg.name, rg.id)
+            rg_msgs.append(json.dumps(rg.serialize(keep_readonly=True)))
 
     msgs.set(rg_msgs)
 
