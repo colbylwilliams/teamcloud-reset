@@ -13,7 +13,7 @@ async def main(msg: func.QueueMessage) -> None:
 
     sub = Subscription.deserialize(msg.get_json())
 
-    logging.info('Starting KeyVault purg task for subscription: %s', sub.display_name)
+    logging.info('Starting KeyVault purge task for subscription: %s', sub.display_name)
 
     credential = DefaultAzureCredential()
     client = KeyVaultManagementClient(credential=credential, subscription_id=sub.subscription_id)
