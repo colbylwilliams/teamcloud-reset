@@ -1,0 +1,18 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "refreshtimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 0 5 * * 1"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "msgs",
+      "queueName": "purge-keyvaults-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}

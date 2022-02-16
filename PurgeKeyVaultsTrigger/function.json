@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "purge-keyvaults-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}

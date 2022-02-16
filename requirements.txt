@@ -1,0 +1,14 @@
+# DO NOT include azure-functions-worker in this file
+# The Python Worker is managed by Azure Functions platform
+# Manually managing azure-functions-worker may cause unexpected issues
+
+aiohttp
+
+azure-functions
+
+azure-identity
+azure-cosmos>=4.3.0b2
+
+azure-mgmt-keyvault
+azure-mgmt-resource
+azure-mgmt-subscription

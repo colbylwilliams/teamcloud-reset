@@ -1,0 +1,19 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "reset-subscription-queue",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "msgs",
+      "queueName": "delete-resourcegroup-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}

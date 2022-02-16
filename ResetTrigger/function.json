@@ -1,0 +1,18 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "resettimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 0 8 * * 6"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "msgs",
+      "queueName": "reset-subscription-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}
