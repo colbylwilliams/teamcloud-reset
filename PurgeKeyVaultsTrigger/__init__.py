@@ -2,7 +2,7 @@ import logging
 
 import azure.functions as func
 
-from azure.identity import DefaultAzureCredential
+from azure.identity.aio import DefaultAzureCredential
 from azure.mgmt.keyvault.aio import KeyVaultManagementClient
 from azure.mgmt.resource.subscriptions.models import Subscription
 
