@@ -9,6 +9,8 @@ azure-functions
 azure-identity
 azure-cosmos>=4.3.0b2
 
+azure-mgmt-cosmosdb
 azure-mgmt-keyvault
 azure-mgmt-resource
 azure-mgmt-subscription
+azure-mgmt-web

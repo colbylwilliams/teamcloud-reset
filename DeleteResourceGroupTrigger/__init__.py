@@ -10,8 +10,6 @@ from azure.mgmt.resource.resources.models import ResourceGroup
 
 
 async def main(msg: func.QueueMessage) -> None:
-    logging.info('Python queue trigger function processed a queue item: %s',
-                 msg.get_body().decode('utf-8'))
 
     rg = ResourceGroup.deserialize(msg.get_json())
 
@@ -21,21 +19,18 @@ async def main(msg: func.QueueMessage) -> None:
     logging.info('Starting delete task for Resource Group: %s', rg.name)
 
     credential = DefaultAzureCredential()
-    lock_client = ManagementLockClient(credential=credential, subscription_id=sub_id)
 
     logging.info('Getting Management Locks for Resource Group...')
 
-    async with lock_client, credential:
-        async for lock in lock_client.management_locks.list_at_resource_group_level(rg.name):
+    async with credential, ManagementLockClient(credential=credential, subscription_id=sub_id) as client:
+        async for lock in client.management_locks.list_at_resource_group_level(rg.name):
             logging.info('Deleting Management Lock: %s', lock.name)
-            await lock_client.management_locks.delete_at_resource_group_level(rg.name, lock.name)
+            await client.management_locks.delete_at_resource_group_level(rg.name, lock.name)
 
     logging.info('Deleting Resource Group...')
 
-    rg_client = ResourceManagementClient(credential=credential, subscription_id=sub_id)
-
-    async with rg_client, credential:
-        rg_delete = await rg_client.resource_groups.begin_delete(rg.name)
+    async with credential, ResourceManagementClient(credential=credential, subscription_id=sub_id) as client:
+        rg_delete = await client.resource_groups.begin_delete(rg.name)
         await rg_delete.result()
 
     logging.info('Done.')

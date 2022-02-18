@@ -4,5 +4,17 @@
     "azureFunctions.pythonVenv": ".venv",
     "azureFunctions.projectLanguage": "Python",
     "azureFunctions.projectRuntime": "~4",
-    "debug.internalConsoleOptions": "neverOpen"
+    "debug.internalConsoleOptions": "neverOpen",
+    "files.exclude": {
+        "**/.vs": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/**.egg-info": true,
+        "**/__pycache__": true,
+        "**/**.dist-info": true,
+        ".venv/include": true,
+        ".venv/pyvenv.cfg": true,
+    },
 }

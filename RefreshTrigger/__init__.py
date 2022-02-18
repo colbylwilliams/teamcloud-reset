@@ -14,27 +14,25 @@ async def main(refreshtimer: func.TimerRequest, msgs: func.Out[typing.List[str]]
 
     # Cron set to "0 0 5 * * 1" Monday morning 5am UTC
 
-    utc_timestamp = datetime.datetime.utcnow().replace(
-        tzinfo=datetime.timezone.utc).isoformat()
+    utc_timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
 
     if refreshtimer.past_due:
         logging.info('The timer is past due!')
 
     logging.info('Refresh trigger function ran at %s', utc_timestamp)
 
+    svc_sub_id = os.environ['TEAMCLOUD_SVC_SUBSCRIPTION']
     sub_prefix = os.environ['SUBSCRIPTION_FILTER_PREFIX']
-    skip_suffix = os.environ['SUBSCRIPTION_SKIP_SUFFIX']
 
     credential = DefaultAzureCredential()
-    client = SubscriptionClient(credential=credential)
-
-    logging.info('Queuing purge of soft-deleted KeyVaults in the following subscriptions:')
 
     sub_msgs = []
 
-    async with client, credential:
+    logging.info('Queuing purge of soft-deleted KeyVaults in the following subscriptions:')
+
+    async with credential, SubscriptionClient(credential=credential) as client:
         async for sub in client.subscriptions.list():
-            if sub.display_name.lower().startswith(sub_prefix) and not sub.display_name.lower().endswith(skip_suffix):
+            if sub.display_name.lower().startswith(sub_prefix) and not sub.subscription_id == svc_sub_id:
                 logging.info('...%s (%s)', sub.display_name, sub.subscription_id)
                 sub_msgs.append(json.dumps(sub.serialize(keep_readonly=True)))
 
